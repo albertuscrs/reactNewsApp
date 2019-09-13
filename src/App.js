@@ -27,7 +27,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      result: null,
+      results: null,
+      searchKey: '',
       searchTerm: DEFAULT_QUERY
     }
 
@@ -38,11 +39,17 @@ class App extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  checkTopStoriesSearchTerm(searchTerm){
+    return !this.state.results[searchTerm];
+  }
+
   setTopStories(result){
     const { hits, page } = result;
-    const oldHits = page !== 0 ? this.state.result.hits : [];
+    // const oldHits = page !== 0 ? this.state.result.hits : [];
+    const { searchKey, results } = this.state;
+    const oldHits = results && results[searchKey] ? results[searchKey].hits : []
     const updatedHits = [...oldHits, ...hits]
-    this.setState({ result: { hits: updatedHits, page } });
+    this.setState({ results: { ...results, [searchKey]: { hits: updatedHits, page } } });
   }
 
   fetchTopStories(searchTerm, page){
@@ -53,18 +60,27 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.fetchTopStories(this.state.searchTerm, DEFAULT_PAGE);
+    const { searchTerm } = this.state;
+    this.setState({ searchKey: searchTerm });
+    this.fetchTopStories(searchTerm, DEFAULT_PAGE);
   }
 
   onSubmit(event){
-    this.fetchTopStories(this.state.searchTerm, DEFAULT_PAGE);
+    const { searchTerm } = this.state;
+    this.setState({ searchKey: searchTerm });
+
+    if(this.checkTopStoriesSearchTerm(searchTerm)){
+      this.fetchTopStories(this.state.searchTerm, DEFAULT_PAGE);
+    }
+
     event.preventDefault();
   }
 
   removeItem(id){
-    const { result } = this.state;
-    const updatedList = result.hits.filter(item => item.objectID !== id);
-    this.setState({result: {...result, hits: updatedList}});
+    const { results, searchKey } = this.state;
+    const { hits, page } = results[searchKey];
+    const updatedList = hits.filter(item => item.objectID !== id);
+    this.setState({results: {...results, [searchKey]: {hits: updatedList}}});
   }
 
   searchValue(event){
@@ -72,9 +88,11 @@ class App extends Component {
   }
 
   render(){
-    const { result, searchTerm } = this.state;
+    const { results, searchTerm, searchKey } = this.state;
 
-    const page = (result && result.page) || 0;
+    const page = (results && results[searchKey] && results[searchKey].page) || 0;
+
+    const list = (results && results[searchKey] && results[searchKey].hits) || [];
 
     console.log(this);
     return (
@@ -90,13 +108,13 @@ class App extends Component {
               </div>
             </Row>
           </Container>
-          { result &&
-            <Table
-            list={ result.hits }
+
+          <Table
+            list={ list }
             searchTerm={ searchTerm }
             removeItem={ this.removeItem }
-            />
-          }
+          />
+
           <div className="text-center alert">
             <Button
               className="btn btn-success btn-sm"
