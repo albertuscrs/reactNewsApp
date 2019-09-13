@@ -109,20 +109,23 @@ class App extends Component {
             </Row>
           </Container>
 
-          <Table
-            list={ list }
-            searchTerm={ searchTerm }
-            removeItem={ this.removeItem }
-          />
-
-          <div className="text-center alert">
-            <Button
-              className="btn btn-success btn-sm"
-              onClick={ () => this.fetchTopStories(searchTerm, page + 1) }
-            >
-              Load More
-            </Button>
-          </div>
+          <Container>
+            <Row>
+              <Table
+                list={ list }
+                searchTerm={ searchTerm }
+                removeItem={ this.removeItem }
+                />
+              <div className="text-center alert">
+                <Button
+                  className="btn btn-success btn-sm"
+                  onClick={ () => this.fetchTopStories(searchTerm, page + 1) }
+                  >
+                  Load More
+                </Button>
+              </div>
+            </Row>
+          </Container>
       </div>
     );
   }
