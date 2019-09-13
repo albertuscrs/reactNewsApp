@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import list from './list';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Form, FormGroup } from 'react-bootstrap';
 import './App.css';
 import { id } from 'postcss-selector-parser';
 
@@ -45,7 +45,7 @@ class App extends Component {
                 <Search
                   onChange={ this.searchValue }
                   value={ searchTerm }
-                >Search here </Search>
+                >News App</Search>
               </div>
             </Row>
           </Container>
@@ -63,14 +63,25 @@ class App extends Component {
 
 const Search = ({ onChange, value, children }) => {
   return(
-    <form>
-      { children }
-      <input 
-        type="text"
-        onChange={ onChange }
-        value={ value }
-      />
-    </form>
+    <Form>
+       <h1 style={{ fontWeight: 'bold' }}>{ children }</h1> <hr style={{ border: '2px solid black', width: '100px' }} />
+        <div className="input-group">
+          <input 
+            className="form-control full-width searchForm"
+            type="text"
+            onChange={ onChange }
+            value={ value }
+          />
+          <span className="input-group-btn">
+            <button
+              className="btn btn-primary searchBtn"
+              type="submit"
+            >
+              Search
+            </button>
+          </span>
+          </div>
+    </Form>
   )
 }
 
