@@ -14,6 +14,7 @@ code {
 
 .jumbotron {
   background-color: white;
+  text-align: center;
 }
 
 .searchForm {
@@ -22,4 +23,8 @@ code {
 
 .searchBtn {
   width: 100px;
+}
+
+.btn {
+  margin-left: 5px;
 }
