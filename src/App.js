@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import list from './list';
 import { Container, Row, FormGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { sortBy } from 'lodash';
 import {
   DEFAULT_QUERY,
   DEFAULT_PAGE,
@@ -13,6 +14,14 @@ import {
   PARAM_HPP
 } from './constant/index';
 
+const SORTS = {
+  NONE: list => list,
+  TITLE: list => sortBy(list, 'title'),
+  AUTHOR: list => sortBy(list, 'author'),
+  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
+  POINTS: list => sortBy(list, 'points').reverse()
+}
+
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}&${PARAM_HPP}${DEFAULT_HPP}`;
 // console.log(url);
 
@@ -21,6 +30,9 @@ function isSearched(searchTerm){
     return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase()) || item.author.toLowerCase().includes(searchTerm.toLowerCase());
   }
 }
+
+const withLoading = (Component) => ({ isLoading, ...rest}) =>
+  isLoading ? <Loading /> : <Component {...rest} />
 
 class App extends Component {
 
@@ -31,7 +43,9 @@ class App extends Component {
       results: null,
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
-      isLoading: false
+      isLoading: false,
+      sortKey: 'NONE',
+      isSortReverse: false
     }
 
     this.removeItem = this.removeItem.bind(this);
@@ -39,6 +53,13 @@ class App extends Component {
     this.fetchTopStories = this.fetchTopStories.bind(this);
     this.setTopStories = this.setTopStories.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSort = this.onSort.bind(this);
+  }
+
+  // sort function
+  onSort(sortKey){
+    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
+    this.setState({ sortKey, isSortReverse });
   }
 
   checkTopStoriesSearchTerm(searchTerm){
@@ -95,7 +116,7 @@ class App extends Component {
   }
 
   render(){
-    const { results, searchTerm, searchKey, isLoading } = this.state;
+    const { results, searchTerm, searchKey, isLoading, sortKey, isSortReverse } = this.state;
 
     const page = (results && results[searchKey] && results[searchKey].page) || 0;
 
@@ -119,18 +140,22 @@ class App extends Component {
           <Row>
             <Table
               list={ list }
+              sortKey= { sortKey }
+              isSortReverse={ isSortReverse }
+              onSort= { this.onSort }
               searchTerm={ searchTerm }
               removeItem={ this.removeItem }
               />
-            <div className="col-md-6 offset-md-3 alert">
-              { isLoading ? <Loading /> :
-                <Button
-                  className="btn btn-success btn-sm"
+            <div className="text-center col-md-6 offset-md-3 alert">
+              
+                <ButtonWithLoading
+                  isLoading={ isLoading }
+                  className="btn btn-dark btn-sm"
                   onClick={ () => this.fetchTopStories(searchTerm, page + 1) }
                   >
                   Load More
-                </Button>
-              }
+                </ButtonWithLoading>
+              
             </div>
           </Row>
         </Container>
@@ -172,12 +197,49 @@ class Search extends Component {
   }
 }
 
-const Table = ({ list, searchTerm, removeItem }) => {
+const Table = ({ list, searchTerm, removeItem, sortKey, onSort, isSortReverse }) => {
+  const sortedList = SORTS[sortKey](list);
+  const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
+
   return(
     <div>
+      <div className="mb-5 col-md-6 offset-md-3 text-center">
+        <hr />
+        <Sort
+          className="btn btn-xs btn-outline-dark sortBtn"
+          sortKey={ 'NONE' }
+          onSort= { onSort }
+          activeSortKey={ sortKey }
+        >Default</Sort>
+        <Sort
+          className="btn btn-xs btn-outline-dark sortBtn"
+          sortKey={ 'TITLE' }
+          onSort= { onSort }
+          activeSortKey={ sortKey }
+        >Title</Sort>
+        <Sort
+          className="btn btn-xs btn-outline-dark sortBtn"
+          sortKey={ 'AUTHOR' }
+          onSort= { onSort }
+          activeSortKey={ sortKey }
+        >Author</Sort>
+        <Sort
+          className="btn btn-xs btn-outline-dark sortBtn"
+          sortKey={ 'COMMENTS' }
+          onSort= { onSort }
+          activeSortKey={ sortKey }
+          >Comments</Sort>
+        <Sort
+          className="btn btn-xs btn-outline-dark sortBtn"
+          sortKey={ 'POINTS' }
+          onSort= { onSort }
+          activeSortKey={ sortKey }
+          >Points</Sort>
+        <hr />
+      </div>
       {
         // list.filter( isSearched(searchTerm) ).map(item =>
-        list.map(item =>
+        reverseSortedList.map(item =>
           <div key={ item.objectID }>
               <h1>  <a href = { item.url }>{ item.title }</a></h1>
               <h4> { item.author } | { item.num_comments } Comments | { item.points } Points 
@@ -227,6 +289,28 @@ Button.defaulProps = {
 }
 
 const Loading = () =>
-  <div className='col-md-6 offset-md-3'>Loading...</div>
+  <div className='col-md-6 offset-md-3'>
+    <h3>Loading...</h3>
+  </div>
+
+const ButtonWithLoading = withLoading(Button);
+
+const Sort = ({ sortKey, onSort, children, className, activeSortKey }) =>
+ {
+   const sortClass = ['btn btn-outline-dark'];
+
+   if(sortKey === activeSortKey){
+     sortClass.push('btn btn-warning');
+   }
+  return(
+    <Button
+      className={ sortClass.join(' ') }
+      onClick={ () => onSort(sortKey) }
+      activeSortKey={ sortKey }
+      >
+      { children }
+    </Button>
+  )
+ }
 
 export default App;
