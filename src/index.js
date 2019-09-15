@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
-import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, NavLink, HashRouter } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import * as serviceWorker from './serviceWorker';
 import Javascript from './components/Javascript';
 import Python from './components/Python';
 
 const Root = () =>
-<Router basename='/react-news-app'>
+<HashRouter basename='/react-news-app'>
   <div>
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand href='/'>NEWSAPP</Navbar.Brand>
@@ -17,8 +17,8 @@ const Root = () =>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
             <Nav.Link href='/' >Home</Nav.Link>
-            {/* <Nav.Link href='/javascript' >Javascript</Nav.Link> */}
-            {/* <Nav.Link href='/python' >Python</Nav.Link> */}
+            <Nav.Link href='/javascript' >Javascript</Nav.Link>
+            <Nav.Link href='/python' >Python</Nav.Link>
             <Nav.Link href='https://github.com/albertuscrs/react-news-app' >My GitHub</Nav.Link>
         </Nav>
       </Navbar.Collapse>
@@ -28,7 +28,7 @@ const Root = () =>
     <Route exact path='/javascript' component={ Javascript } />
     <Route exact path='/python' component={ Python } />
   </div>
-</Router>
+</HashRouter>
 
 // const About = () =>
 // <div>
