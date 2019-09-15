@@ -17,8 +17,8 @@ const Root = () =>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
             <Nav.Link href='/' >Home</Nav.Link>
-            <Nav.Link href='/javascript' >Javascript</Nav.Link>
-            <Nav.Link href='/python' >Python</Nav.Link>
+            {/* <Nav.Link href='/javascript' >Javascript</Nav.Link> */}
+            {/* <Nav.Link href='/python' >Python</Nav.Link> */}
             <Nav.Link href='https://github.com/albertuscrs/react-news-app' >My GitHub</Nav.Link>
         </Nav>
       </Navbar.Collapse>

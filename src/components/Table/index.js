@@ -37,7 +37,7 @@ class Table extends Component{
 
     return(
       <div>
-        <div className="mt-3 mb-5 col-md-6 offset-md-3 text-center">
+        <div className="mt-3 mb-5 ">
           <Sort
             className="btn btn-xs btn-outline-dark sortBtn"
             sortKey={ 'NONE' }
