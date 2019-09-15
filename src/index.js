@@ -11,19 +11,16 @@ import Python from './components/Python';
 const Root = () =>
 <Router basename='/react-news-app'>
   <div>
-    <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href='/'>
-            NEWSAPP
-        </Navbar.Brand>
-      <Nav className="mr-auto">
-          <Nav.Link href='/' >Home</Nav.Link>
-          <Nav.Link href='/javascript' >Javascript</Nav.Link>
-          <Nav.Link href='/python' >Python</Nav.Link>
-      </Nav>
-      <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text>
-          Made with love: <a href="https://github.com/albertuscrs/reactNewsApp">GitHub</a>
-        </Navbar.Text>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar.Brand href='/'>NEWSAPP</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+            <Nav.Link href='/' >Home</Nav.Link>
+            <Nav.Link href='/javascript' >Javascript</Nav.Link>
+            <Nav.Link href='/python' >Python</Nav.Link>
+            <Nav.Link href='https://github.com/albertuscrs/react-news-app' >My GitHub</Nav.Link>
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
 

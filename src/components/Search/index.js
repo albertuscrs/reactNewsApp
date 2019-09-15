@@ -11,7 +11,7 @@ class Search extends Component {
     return(
       <form onSubmit={ onSubmit }>
         <FormGroup>
-        <h1 style={{ fontWeight: 'bold' }}>{ children }</h1> <hr style={{ border: '2px solid black', width: '100px' }} />
+        <h3 style={{ fontWeight: 'bold' }}>{ children }</h3> <hr style={{ border: '2px solid black', width: '100px' }} />
           <div className="input-group">
             <input 
               className="form-control full-width searchForm"

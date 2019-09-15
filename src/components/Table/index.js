@@ -37,7 +37,7 @@ class Table extends Component{
 
     return(
       <div>
-        <div className="mb-5 col-md-6 offset-md-3 text-center">
+        <div className="mt-3 mb-5 col-md-6 offset-md-3 text-center">
           <Sort
             className="btn btn-xs btn-outline-dark sortBtn"
             sortKey={ 'NONE' }
@@ -73,7 +73,7 @@ class Table extends Component{
           // list.filter( isSearched(searchTerm) ).map(item =>
           reverseSortedList.map(item =>
             <div key={ item.objectID }>
-                <h1>  <a href = { item.url } target='_blank' rel="noopener noreferrer">{ item.title }</a></h1>
+                <h3>  <a href = { item.url } target='_blank' rel="noopener noreferrer">{ item.title }</a></h3>
                 <h4> { item.author } | { item.num_comments } Comments | { item.points } Points 
                   <Button
                     className="btn btn-secondary btn-sm"
