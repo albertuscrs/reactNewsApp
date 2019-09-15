@@ -38,7 +38,6 @@ class Table extends Component{
     return(
       <div>
         <div className="mb-5 col-md-6 offset-md-3 text-center">
-          <hr />
           <Sort
             className="btn btn-xs btn-outline-dark sortBtn"
             sortKey={ 'NONE' }
@@ -69,7 +68,6 @@ class Table extends Component{
             onSort= { this.onSort }
             activeSortKey={ sortKey }
             >Points</Sort>
-          <hr />
         </div>
         {
           // list.filter( isSearched(searchTerm) ).map(item =>
