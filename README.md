@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+For the live demo [click here](https://albertuscrs.github.io/react-news-app/)
+
 ## Available Scripts
 
 In the project directory, you can run:
